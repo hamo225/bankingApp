@@ -1,0 +1,19 @@
+{
+  "name": "bankingapp",
+  "version": "1.0.0",
+  "description": "Banking app built as a project in Jonas Schmedtmanns JavaScript course on Udemy.",
+  "main": "script.js",
+  "scripts": {
+    "start": "live-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hamo225/bankingApp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hamo225/bankingApp/issues"
+  },
+  "homepage": "https://github.com/hamo225/bankingApp#readme"
+}

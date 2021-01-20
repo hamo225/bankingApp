@@ -166,10 +166,15 @@ btnScrollTo.addEventListener("click", (e) => {
 // mouse enter event
 const h1 = document.querySelector("h1");
 
-h1.addEventListener("mouseenter", (e) => {
-  alert("enter");
-});
+const alertH1 = () => {
+  alert("enters");
+};
 
-h1.addEventListener("mouseleave", (e) => {
+h1.addEventListener("mouseenter", alertH1);
+
+// removing the event listener
+setTimeout(() => h1.removeEventListener("mouseenter", alertH1), 5000);
+
+h1.addEventListener("mouseleave", () => {
   alert("leave");
 });

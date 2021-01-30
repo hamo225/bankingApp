@@ -673,19 +673,18 @@ h4 {
   font-weight: 400;
 }
 
-
 /* Animations */
 
 @keyframes animate {
-  0%{
-      transform: translateY(0) rotate(0deg);
-      opacity: 1;
-      border-radius: 0;
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+    border-radius: 0;
   }
-  100%{
-      transform: translateY(-1000px) rotate(720deg);
-      opacity: 0;
-      border-radius: 50%;
+  100% {
+    transform: translateY(-1000px) rotate(720deg);
+    opacity: 0;
+    border-radius: 50%;
   }
 }
 
@@ -699,6 +698,7 @@ h4 {
   padding: 0;
   /* background: #ffffff; */
   overflow: hidden;
+  z-index: -1000;
 }
 .background li {
   position: absolute;
@@ -709,9 +709,6 @@ h4 {
   background: rgba(30, 214, 122, 0.534);
   animation: animate 5s linear infinite;
 }
-
-
-
 
 .background li:nth-child(0) {
   left: 25%;

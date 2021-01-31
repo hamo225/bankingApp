@@ -9,6 +9,9 @@ const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
+const tabs = document.querySelectorAll('.operations__tab');
+const tabContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
 
 const openModal = function (e) {
   e.preventDefault();
@@ -269,8 +272,8 @@ const h11 = document.querySelector('.h1');
 console.log(h11.querySelectorAll('.highlight'));
 console.log(h11.childNodes); //selects all child nodes
 console.log(h11.children); //collects only direct CHILDREN (HTML LIVE COLLECTION)
-h11.firstElementChild.style.color = 'orange';
-h11.lastElementChild.style.color = 'orange';
+// h11.firstElementChild.style.color = 'orange';
+// h11.lastElementChild.style.color = 'orange';
 
 // GOING UP: selecting parents
 
@@ -278,8 +281,8 @@ console.log(h11.parentNode);
 console.log(h11.parentElement); //usually the one interested in
 
 //more often need to find a parent element no matter how far away
-h11.closest('.header').style.background = 'var(--gradient-secondary)';
-h11.closest('.h1').style.background = 'red';
+// h11.closest('.header').style.background = 'var(--gradient-secondary)';
+// h11.closest('.h1').style.background = 'red';
 
 // GOING SIDEWAYS: DIRECT SIBLINGS
 console.log(h11.previousElementSibling);
@@ -295,9 +298,6 @@ console.log(h11.parentElement.children); //html collection
 });
 
 // TABBED COMPONENTS
-const tabs = document.querySelectorAll('.operations__tab');
-const tabContainer = document.querySelector('.operations__tab-container');
-const tabsContent = document.querySelectorAll('.operations__content');
 
 // BAD TO USE AS IF WE HAD 100 OF THESE TABS AND THUS 100 COPIES OF THIS CALLBACK FUNCTION.
 // tabs.forEach((t) => {
@@ -344,3 +344,94 @@ tabContainer.addEventListener('click', (e) => {
 });
 
 // POINT WITH TABBED CONTENT IS TO WORK WITH CLASSES AND ADD AND REMOVE COMPONENTS AND MANIPULATING CSS STYLES
+
+// PASSING ARGUMENTS INTO EVENT HANDLERS - menu fade animation
+// event delegation instead of repeating a function
+const nav = document.querySelector('.nav');
+
+// REFACTORING CODE - MAKING A GENERAL FUCNTION FOR THE MENU FADE ANIMATION
+const handleHover = (e) => {
+  //mouse over similar to mouse enter but it bubbles
+  if (e.target.classList.contains('nav__link')) {
+    //if the target element contains the class name then
+    //select the target element
+    const link = e.target; //finding out the link that is clicked
+    //select the siblings - go to closest .nav and then select all nav__link
+    const siblings = link.closest('.nav').querySelectorAll('.nav__link'); //finding the closest element with .nav class
+    //select the logo
+    const logo = link.closest('.nav').querySelector('img');
+
+    // for each sibling if it is not selected or not the target then opacity 0.5
+    siblings.forEach((s) => {
+      if (s != link) {
+        s.style.opacity = this;
+      }
+    });
+
+    logo.style.opacity = this;
+  }
+};
+
+// Use the bind method. It makes a copy of the function and then we pass into it the params we want to use to get the response
+nav.addEventListener('mouseover', handleHover.bind(0.5));
+nav.addEventListener('mouseout', handleHover.bind(1));
+
+// nav.addEventListener('mouseover', (e) => {
+//   // //mouse over similar to mouse enter but it bubbles
+//   // if (e.target.classList.contains('nav__link')) {
+//   //   //if the target element contains the class name then
+//   //   //select the target element
+//   //   const link = e.target; //finding out the link that is clicked
+//   //   //select the siblings - go to closest .nav and then select all nav__link
+//   //   const siblings = link.closest('.nav').querySelectorAll('.nav__link'); //finding the closest element with .nav class
+//   //   //select the logo
+//   //   const logo = link.closest('.nav').querySelector('img');
+//   //   // for each sibling if it is not selected or not the target then opacity 0.5
+//   //   siblings.forEach((s) => {
+//   //     if (s != link) {
+//   //       s.style.opacity = 0.5;
+//   //     }
+//   //   });
+//   //   logo.style.opacity = 0.5;
+//   // }
+// });
+
+// nav.addEventListener('mouseout', (e) => {
+//   // //mouse over similar to mouse enter but it bubbles
+//   // if (e.target.classList.contains('nav__link')) {
+//   //   //if the target element contains the class name then
+//   //   //select the target element
+//   //   const link = e.target; //finding out the link that is clicked
+//   //   //select the siblings - go to closest .nav and then select all nav__link
+//   //   const siblings = link.closest('.nav').querySelectorAll('.nav__link'); //finding the closest element with .nav class
+//   //   //select the logo
+//   //   const logo = link.closest('.nav').querySelector('img');
+//   //   // for each sibling if it is not selected or not the target then opacity 0.5
+//   //   siblings.forEach((s) => {
+//   //     if (s != link) {
+//   //       s.style.opacity = 1;
+//   //     }
+//   //   });
+//   //   logo.style.opacity = 1;
+//   // }
+// });
+
+// STICKY NAVIGATION
+// using scroll event -NOT BEST PERFORMANCE AS THE SCROLL EVENT IS CONSTANTLY FIRING OFF EVENTS - NOT GOOD FOR PERFORMANCE
+// need to calc position dynamically
+const initialCoords = section1.getBoundingClientRect();
+console.log(initialCoords);
+
+window.addEventListener('scroll', () => {
+  // define when the navigation should become sticky
+  // when we scroll enough to reach the first section
+
+  // if the distance we reach in scrolling the page is greater than the starting distance from top of page to bottom then
+  if (window.scrollY > initialCoords.top) {
+    nav.classList.add('sticky');
+  } else {
+    nav.classList.remove('sticky');
+  }
+});
+
+// INTERSECTION OF SERVER API

@@ -293,3 +293,54 @@ console.log(h11.parentElement.children); //html collection
     e.style.transform = 'scale(0.5)';
   }
 });
+
+// TABBED COMPONENTS
+const tabs = document.querySelectorAll('.operations__tab');
+const tabContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+
+// BAD TO USE AS IF WE HAD 100 OF THESE TABS AND THUS 100 COPIES OF THIS CALLBACK FUNCTION.
+// tabs.forEach((t) => {
+//   t.addEventListener('click', () => {
+//     console.log('Tab clicked');
+//   });
+// });
+
+// THEREFORE - USE EVENT DELEGATION
+//  need to attach event handler on the common parent element that we are interested in
+// need the event as the parameter - so we can identify where the click happened
+tabContainer.addEventListener('click', (e) => {
+  // find out where the button was clicked
+  const clicked = e.target.closest('.operations__tab');
+  // but we need to make sure when we click the span it will select the button not just the span
+  // need to find a way to select the parent element that is always a tab
+  // use DOM TRAVERSING and the closest method. ---- VERY COMMON IN EVENT DELEGATION
+  // console.log(clicked);
+
+  // since we have added the evnt listenser to the tab container. Users can still click anywhere in the tab and not on the buttons and will get a null response in the console.
+  // to remove this we can do an if statement that will return early if a condition is matched
+  // GUARD CLAUSE
+  if (!clicked) return; //this will end the function if clicked does not exist
+
+  // remove the active classlist from all the tabs first
+  tabs.forEach((t) => {
+    t.classList.remove('operations__tab-active');
+  });
+
+  // then add it once it is clicked
+  clicked.classList.add('operations__tab--active');
+
+  // activate the content part
+  // console.log(clicked.dataset.tab);
+
+  // remove the classlist active for each tab so that they do not stack up on each other when clicked
+  tabsContent.forEach((t) => {
+    t.classList.remove('operations__content--active');
+  });
+
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add('operations__content--active');
+});
+
+// POINT WITH TABBED CONTENT IS TO WORK WITH CLASSES AND ADD AND REMOVE COMPONENTS AND MANIPULATING CSS STYLES

@@ -445,7 +445,7 @@ window.addEventListener('scroll', () => {
 
 const obsCallback = (entries, observer) => {
   entries.forEach((entry) => {
-    console.log(entry);
+    // console.log(entry);
   });
 };
 
@@ -492,3 +492,36 @@ const observerOptions = {
 // create observer
 const observer1 = new IntersectionObserver(observerCallback, observerOptions);
 observer1.observe(HEADER);
+
+// REVEAL ELEMENTS ON SCROLLING
+// comes from adding a css class as you reah them
+// use the intersection observer API to remove the hidden class as you approach each section
+// need to observe all 4 sections in this case - dynamically using the same observer not 1 for each
+const allSections = document.querySelectorAll('.section'); //select all the elements with section class. Creatign a node list
+
+const sectionObsCallback = (entries, sectionObserver) => {
+  const [entry] = entries; //get entries by destructuring
+  // console.log(entry);
+
+  if (!entry.isIntersecting) return;
+
+  entry.target.classList.remove('section--hidden');
+  observer.unobserve(entry.target); //unobserve sections once observed. Rmoves unessesary observations and helps with performance
+};
+
+const sectionObsOption = {
+  root: null,
+  threshold: 0.15,
+};
+
+const sectionObserver = new IntersectionObserver(
+  sectionObsCallback,
+  sectionObsOption
+);
+
+// loop over the selection of .section class elements
+// using forEach to loop over somethignt that does nto involve creating a new array
+allSections.forEach((section) => {
+  sectionObserver.observe(section);
+  section.classList.add('section--hidden');
+});

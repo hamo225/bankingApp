@@ -511,7 +511,7 @@ const sectionObsCallback = (entries, sectionObserver) => {
 
 const sectionObsOption = {
   root: null,
-  threshold: 0.15,
+  threshold: 0.25,
 };
 
 const sectionObserver = new IntersectionObserver(
@@ -524,4 +524,44 @@ const sectionObserver = new IntersectionObserver(
 allSections.forEach((section) => {
   sectionObserver.observe(section);
   section.classList.add('section--hidden');
+});
+
+// LAZY LOADING IMAGES - great for performance
+// Have two sets of each image - one a low res copy, one a high res copy
+// add a html attribute data-src for the image
+// when you scroll to the image - the data-src value will change from the low res image to the high res one
+// remove the class name that causes blurry styling to the image
+
+const imgTargets = document.querySelectorAll('img[data-src]');
+
+const imgObserverCallback = (entries, observer) => {
+  const [entry] = entries;
+  console.log(entry);
+
+  if (!entry.isIntersecting) return;
+
+  // replace src with data-src
+  entry.target.src = entry.target.dataset.src;
+
+  //
+  entry.target.addEventListener('load', () => {
+    entry.target.classList.remove('lazy-img');
+  });
+
+  observer.unobserve(entry.target); //unobserve sections once observed. Rmoves unessesary observations and helps with performance
+};
+
+const imgObserverOptions = {
+  root: null,
+  threshhold: 0,
+  rootMargin: '200px',
+};
+
+const imgObserver = new IntersectionObserver(
+  imgObserverCallback,
+  imgObserverOptions
+);
+
+imgTargets.forEach((img) => {
+  imgObserver.observe(img);
 });

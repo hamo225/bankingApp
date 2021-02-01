@@ -666,3 +666,19 @@ const slider = () => {
 };
 
 slider();
+
+// LIFECYLCE DOM EVENTS
+
+window.addEventListener('beforeunload', (e) => {
+  e.preventDefault();
+  e.returnValue = '';
+});
+
+window.addEventListener('load', (e) => {
+  console.log('Page Fully Loaded', e);
+});
+
+// Loading JS script in HTML - adding attribute to the script tag in html
+// regular way
+// async way
+// defer way

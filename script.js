@@ -434,4 +434,61 @@ window.addEventListener('scroll', () => {
   }
 });
 
-// INTERSECTION OF SERVER API
+// INTERSECTION OF SERVER API and implementing sticky navigation
+// - allows us to observe changes in how a target element interacts with another element or the viewport
+
+// HOW DOES IT WORK?
+
+// observer callback
+//TAKES 2 ARGUMENTS, entries and observer. entries is actually an array of the threshold entries.
+//as we can have an array of thresholds to observe
+
+const obsCallback = (entries, observer) => {
+  entries.forEach((entry) => {
+    console.log(entry);
+  });
+};
+
+// what to observe. These are the observe object of options
+const obsOptions = {
+  // FIRST DEFINE THE ROOT PROPERTY
+  //this will be the element that the target is intersecting.
+  root: null, //null means we will see the target element interesecting with the viewport
+  // DEFINE THE THRESHOLD
+  // the percentage at wich there is intersection of the target elemtn with the viewport,
+  //and thus when the callback will be called
+  //threshold: 0.1, //think of this as the threshhold we want to have visible in our root (in this case the viewport)
+  threshold: [0, 0.2], //try with an array now. With 0 means callback triggered as soon as moves out of view of viewport and as soon as enters
+};
+
+//create new one , takes callback function and the object of options
+const observer = new IntersectionObserver(obsCallback, obsOptions);
+// use this observer to observe a certain target -
+observer.observe(section1); //this is the first section we want to observe
+
+// BANKIST APPLICATION- we want to trigger callback when header section is no longer in the viewport
+
+// create callback fucntion
+const observerCallback = (entries, observer1) => {
+  entries.forEach((entry) => {
+    if (!entry.isIntersecting) {
+      nav.classList.add('sticky');
+    } else {
+      nav.classList.remove('sticky');
+    }
+  });
+};
+
+// reading the height from the rectangle better for resposivness
+const navHeight = nav.getBoundingClientRect().height;
+
+//create options
+const observerOptions = {
+  root: null,
+  rootMargin: `-${navHeight}px`,
+  threshold: 0,
+};
+
+// create observer
+const observer1 = new IntersectionObserver(observerCallback, observerOptions);
+observer1.observe(HEADER);
